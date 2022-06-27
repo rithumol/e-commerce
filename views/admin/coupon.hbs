@@ -1,0 +1,238 @@
+<style>
+    .registration-form {
+        padding: 50px 0;
+    }
+
+    .registration-form form {
+        background-color: #fff;
+        max-width: 700px;
+
+        margin: auto;
+        padding: 50px 70px;
+        border-top-left-radius: 30px;
+        border-top-right-radius: 30px;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.075);
+    }
+
+    .registration-form .form-icon {
+        text-align: center;
+        background-color: #5891ff;
+        border-radius: 50%;
+        font-size: 40px;
+        color: white;
+        width: 100px;
+        height: 100px;
+        margin: auto;
+        margin-bottom: 50px;
+        line-height: 100px;
+    }
+
+    .registration-form .item {
+        border-radius: 20px;
+        margin-bottom: 25px;
+        padding: 10px 20px;
+    }
+
+    .registration-form .create-account {
+        border-radius: 30px;
+        padding: 10px 20px;
+        font-size: 18px;
+        font-weight: bold;
+        background-color: #5791ff;
+        border: none;
+        color: white;
+        margin-top: 20px;
+    }
+
+    .registration-form .social-media {
+        max-width: 600px;
+        background-color: #fff;
+        margin: auto;
+        padding: 35px 0;
+        text-align: center;
+        border-bottom-left-radius: 30px;
+        border-bottom-right-radius: 30px;
+        color: #9fadca;
+        border-top: 1px solid #dee9ff;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.075);
+    }
+
+    .registration-form .social-icons {
+        margin-top: 30px;
+        margin-bottom: 16px;
+    }
+
+    .registration-form .social-icons a {
+        font-size: 23px;
+        margin: 0 3px;
+        color: #5691ff;
+        border: 1px solid;
+        border-radius: 50%;
+        width: 45px;
+        display: inline-block;
+        height: 45px;
+        text-align: center;
+        background-color: #fff;
+        line-height: 45px;
+    }
+
+    .registration-form .social-icons a:hover {
+        text-decoration: none;
+        opacity: 0.6;
+    }
+
+    @media (max-width: 576px) {
+        .registration-form form {
+            padding: 50px 20px;
+        }
+
+        .registration-form .form-icon {
+            width: 70px;
+            height: 70px;
+            font-size: 30px;
+            line-height: 70px;
+        }
+    }
+</style>
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <div class="container">
+
+
+            <div class="registration-form">
+
+                <form style="width: 500px;" action="/admin/addCoupon" method="post">
+
+                    <div class="form-group">
+                        <label for="">Coupon Name</label>
+                        <input type="text" name="coupon" class="form-control my-1 item" id="name"
+                            onkeyup="validateName()">
+                        <span id="idname" class="text-danger h5"></span><br>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="">Start Date</label>
+                        <input type="date" name="startDate" class="form-control item my-1" id="sdate"
+                            onkeyup="validateStartDate()">
+                        <span id="idsdate" class="text-danger h5"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="">End Date</label>
+                        <input type="date" name="endDate" class="form-control item my-1" id="edate"
+                            onkeyup="validateEndDate()">
+                        <span id="idedate" class="text-danger h5"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Discount Percentage</label>
+                        <input type="text" class="form-control item my-1" name="percentage" id="dprice"
+                            onkeyup="validateDiscountPrice()">
+                        <span id="iddprice" class="text-danger h5"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-block create-account"
+                            onclick="return validation()">ADD</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+</body>
+
+</html>
+
+<script>
+    var nameError = document.getElementById('idname');
+    var sdateError = document.getElementById('idsdate');
+    var edateError = document.getElementById('idedate');
+    var dpriceError = document.getElementById('iddprice');
+
+
+    function validateName() {
+        const name = document.getElementById('name').value
+
+        if (name === "") {
+            nameError.innerHTML = "Please enter the name!!!";
+            return false;
+        }
+
+        nameError.innerHTML = null;
+        return true;
+    }
+
+    function validateStartDate() {
+        const sdate = document.getElementById('sdate').value
+
+        if (!sdate) {
+            sdateError.innerHTML = "Please select start date!!!";
+            return false;
+        }
+
+
+        sdateError.innerHTML = null;
+        return true;
+    }
+
+    function validateEndDate() {
+        const edate = document.getElementById('edate').value
+
+        if (!edate) {
+            edateError.innerHTML = "Please select expiry date!!!";
+            return false;
+        }
+
+
+        edateError.innerHTML = null;
+        return true;
+    }
+
+
+
+
+    function validateDiscountPrice() {
+        const dprice = document.getElementById('dprice').value
+
+        if (dprice === "") {
+            dpriceError.innerHTML = "Please enter Percentage!!!";
+            return false;
+        }
+        if (dprice.match(/[a-z A-Z]/)) {
+            dpriceError.innerHTML = "Only numbers are allowed";
+            return false;
+        }
+
+        dpriceError.innerHTML = null;
+        return true;
+    }
+
+
+
+
+
+
+    function validation() {
+        if (!validateName() || !validateStartDate() || !validateEndDate() || !validateDiscountPrice()) {
+            return false;
+        }
+
+        return true;
+
+    }
+
+</script>

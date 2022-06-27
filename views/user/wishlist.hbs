@@ -1,0 +1,119 @@
+<style>
+  body {
+    background: #00b09b;
+    margin-top: 70px;
+    background: -webkit-linear-gradient(to right, #00b09b, #96c93d);
+    background: linear-gradient(to right, #00b09b, #96c93d);
+    min-height: 100vh;
+  }
+
+  .text-gray {
+    color: #aaa;
+  }
+</style>
+
+<div class="container py-5">
+
+  <!-- For demo purpose -->
+  <div class="row text-center text-white mt-5">
+
+  </div>
+  <!-- End -->
+
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+
+      <!-- List group-->
+      <ul class="list-group shadow">
+
+        <!-- list group item-->
+
+        <!-- End -->
+        {{#each products}}
+        <!-- list group item-->
+        <li class="list-group-item">
+          <!-- Custom content-->
+          <div class="media align-items-lg-center flex-column flex-lg-row p-3">
+            <div class="media-body order-2 order-lg-1">
+
+              <h5 class="mt-0 font-weight-bold mb-2">{{this.product.Name}}</h5>
+              <p class="font-italic text-muted mb-0 small">{{this.product.Description}}</p>
+              <div class="d-flex align-items-center justify-content-between mt-1">
+                <h6 class="font-weight-bold my-2">{{this.product.DiscountPrice}}</h6>
+                <ul class="list-inline small">
+                  <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
+                  <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
+                  <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
+                  <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
+                  <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
+                </ul>
+              </div>
+            </div><img src="/product-images/{{this.product.Images.[0]}}" alt="Generic placeholder image"
+              style="width: 70px;height:70px" class="ml-lg-5 order-1 order-lg-2">
+          </div>
+          <div class=""><a href="#" onclick="addToCart('{{this.product._id}}')"
+              class="bg-secondary text-light rounded p-2 m-1">Add to Cart</a>
+            <a href="/delete-wishlistItem/{{this._id}}/{{this.product._id}}" onclick="deleteWishlistItem(event)"
+              class="bg-secondary text-light rounded p-2 m-1">Remove</a>
+
+            <!-- End -->
+        </li>
+        {{/each}}
+        <!-- End -->
+
+      </ul>
+      <!-- End -->
+    </div>
+  </div>
+</div>
+
+<script>
+  function addToCart(proId) {
+    $.ajax({
+      url: '/add-to-cart/' + proId,
+      method: 'get',
+      success: (response) => {
+        console.log("success");
+        if (response.success) {
+          Swal.fire({
+
+            icon: 'success',
+            title: 'Item added to Cart',
+            confirmButtonText: 'ok',
+
+          })
+        }
+        let count = $('#cart-count').html()
+        count = parseInt(count) + 1
+        $("#cart-count").html(count)
+        { { !--location.reload() --} }
+      }
+    })
+  }
+
+  function deleteWishlistItem(event) {
+    var link = event.currentTarget.href;
+
+    event.preventDefault();
+
+
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You want to Remove This Item!",
+      icon: 'warning',
+      iconColor: '#bf0f0f',
+      showCancelButton: true,
+      confirmButtonColor: '#11ba25',
+      cancelButtonColor: '#bf0f0f',
+      confirmButtonText: `Yes`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location = link;
+      } else {
+        return false;
+      }
+    })
+  }
+
+</script>

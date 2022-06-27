@@ -1,0 +1,117 @@
+<!-- products section starts  -->
+<style>
+    body {
+        margin: 120px;
+    }
+</style>
+<section class="products" id="products">
+
+    <h1 class="heading"> exclusive <span>products</span> </h1>
+
+    <div class="filter-buttons">
+        <div class="buttons active" onclick="location.href='/view-products'" data-filter="all">all</div>
+        <div class="buttons" onclick="location.href='/womenProducts'" data-filter="arrivals">Women</div>
+        <div class="buttons" onclick="location.href='/menProducts'" data-filter="featured">Men</div>
+        <div class="buttons" onclick="location.href='/kidsProducts'" data-filter="special">Kids</div>
+
+    </div>
+    <div class="row">
+        {{#each products}}
+        <div class="col-md-4 mt-5">
+
+            <div class="box-container">
+
+                <div class="box" data-item="featured">
+                    <div class="icons">
+
+                        <a href="#" onclick="addToCart('{{this._id}}')" class="fas fa-shopping-cart"></a>
+                        <a href="#" onclick="addToWishlist('{{this._id}}')" class="fas fa-heart"></a>
+
+                        <a href="/single-productview/{{this._id}}" class="fas fa-eye"></a>
+                    </div>
+                    <div class="image">
+                        <img src="/product-images/{{this.Images.[0]}}" alt="">
+                    </div>
+                    <div class="content">
+                        <h3>{{this.Name}}</h3>
+                        <div class="price">
+                            {{#if (eq this.Offer "true")}}
+                            <div class="amount">{{this.DiscountPrice}}</div>
+                            <div class="cut">{{this.ActualPrice}}</div>
+                            <div class="offer">{{this.Discount}}% off</div>
+
+                            {{else}}
+                            <div class="amount">{{this.ActualPrice}}</div>
+                            {{/if}}
+
+                        </div>
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <span>(50)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        {{/each}}
+    </div>
+
+</section>
+
+<script>
+    function addToCart(proId) {
+        $.ajax({
+            url: '/add-to-cart/' + proId,
+            method: 'get',
+            success: (response) => {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Item added to cart',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                let count = $('#cart-count').html()
+                count = parseInt(count) + 1
+                $("#cart-count").html(count)
+                location.reload()
+            }
+        })
+    }
+
+    function addToWishlist(proId) {
+        $.ajax({
+            url: '/add-to-wishlist/' + proId,
+            method: 'get',
+            success: (response) => {
+                console.log("success");
+                if (response.success) {
+                    Swal.fire({
+
+                        icon: 'success',
+                        title: 'Item added to wishlist',
+                        confirmButtonText: 'ok',
+
+                    })
+                }
+                if (response.exist) {
+                    Swal.fire({
+
+                        icon: 'success',
+                        title: 'Item already added in wishlist',
+                        confirmButtonText: 'ok',
+
+                    })
+                }
+            }
+        })
+    }
+</script>
+
+<!-- products section ends -->

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
+
+</head>
+
+<body>
+    <div class="page-wrapper">
+
+        <div class="container-fluid">
+
+
+            <table id="example" class="display h4 mt-5">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Options</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each users}}
+                    <tr>
+                        <td>{{inc @index}}</td>
+                        <td>{{this.Name}}</td>
+                        <td>{{this.Email}}</td>
+                        {{#if (eq this.Status "Active")}}
+                        <td class="text-success">Active</td>
+                        {{else}}
+                        <td class="text-danger">Blocked</td>
+                        {{/if}}
+
+                        <td>
+                            {{#if (eq this.Status "Active")}}
+                            <a href="/admin/block-user/{{this._id}}" class="btn btn-danger" onclick="blockUser(event)"
+                                style="font-size:10px ;">Block</a>
+                            {{else}}
+                            <a href="/admin/unblock-user/{{this._id}}" class="btn btn-danger"
+                                onclick="unblockUser(event)" style="font-size:10px ;">Unblock</a>
+                            {{/if}}
+                        </td>
+
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <script>
+        function blockUser(event) {
+            var link = event.currentTarget.href;
+
+            event.preventDefault();
+
+
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to Block this User!",
+                icon: 'warning',
+                iconColor: '#bf0f0f',
+                showCancelButton: true,
+                confirmButtonColor: '#11ba25',
+                cancelButtonColor: '#bf0f0f',
+                confirmButtonText: `Yes`
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location = link;
+                } else {
+                    return false;
+                }
+            })
+        }
+
+        function unblockUser(event) {
+            var link = event.currentTarget.href;
+
+            event.preventDefault();
+
+
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to Unblock this User!",
+                icon: 'warning',
+                iconColor: '#bf0f0f',
+                showCancelButton: true,
+                confirmButtonColor: '#11ba25',
+                cancelButtonColor: '#bf0f0f',
+                confirmButtonText: `Yes`
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location = link;
+                } else {
+                    return false;
+                }
+            })
+        }
+    </script>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+
+
+</body>
+
+</html>

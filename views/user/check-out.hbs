@@ -1,0 +1,261 @@
+<!--Main layout-->
+<main class="mt-5 pt-4">
+  <div class="container wow fadeIn">
+
+    <!-- Heading -->
+    <h2 class="my-5 h2 text-center">Checkout form</h2>
+
+    <!--Grid row-->
+    <div class="row">
+
+      <!--Grid column-->
+      <div class="col-md-8 mb-4">
+
+        <!--Card-->
+        <div class="card">
+
+          <!--Card content-->
+          <form class="card-body h4" id="checkout-form">
+
+            <!--Grid row-->
+
+
+            <!--Username-->
+            <div class="md-form input-group pl-0 mb-5">
+              <div class="input-group-prepend">
+                <a href="/add-address" class="btn btn-primary">Add Address</a>
+              </div>
+
+            </div>
+            <hr>
+
+
+
+            <div class="custom-control custom-radio">
+              {{#each userAddress.Address}}
+              <input name="address" id="{{this.Address_id}}" type="radio" value="{{this.Address_id}}"
+                class="form-check-input" checked>
+              <label class="form-check-label" for="{{this.Address_id}}"> {{this.Name}} {{this.Address}}, {{this.City}},
+                {{this.Pincode}} {{this.Mobile}}</label>
+
+              {{/each}}
+            </div>
+
+           
+
+          
+            <input type="text" name="userId" value="{{user._id}}" hidden>
+            <hr>
+
+            
+
+            <div class="d-block my-3">
+              <div class="custom-control custom-radio">
+                <input id="credit" name="paymentMethod" type="radio" value="COD" class="custom-control-input" checked
+                  required>
+                <label class="custom-control-label" for="credit">Cash on Delivery</label>
+              </div>
+              <div class="custom-control custom-radio">
+                <input id="debit" name="paymentMethod" value="ONLINE" type="radio" class="custom-control-input"
+                  required>
+                <label class="custom-control-label" for="debit">Onine Payment</label>
+              </div>
+              <div class="custom-control custom-radio">
+                <input id="paypal" value="PAYPAL" name="paymentMethod" type="radio" class="custom-control-input" required>
+                <label class="custom-control-label" for="paypal">Paypal</label>
+              </div>
+            </div>
+
+             <input id="total" type="text" value="{{total}}" name="Total" hidden>
+            <hr class="mb-4">
+            <button class="btn btn-primary btn-lg btn-block" type="submit">Place Order</button>
+
+          </form>
+
+        </div>
+        <!--/.Card-->
+
+      </div>
+      <!--Grid column-->
+
+      <!--Grid column-->
+      <div class="col-md-4 mb-4">
+
+        <!-- Heading -->
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-muted">Your cart</span>
+          <span class="badge badge-secondary badge-pill">{{cartCount}}</span>
+        </h4>
+
+        <!-- Cart -->
+        {{#each products}}
+        <ul class="list-group mb-3 z-depth-1">
+          <li class="list-group-item d-flex justify-content-between lh-condensed">
+            <div>
+              <h6 class="my-0">{{this.product.Name}}</h6>
+              <small class="text-muted">Quantity: {{this.quantity}}</small>
+            </div>
+            <span class="text-muted">{{this.product.DiscountPrice}}</span>
+          </li>
+          {{/each}}
+
+
+          <li class="list-group-item d-flex justify-content-between">
+
+            <span>Total (RS.)</span>
+            <strong id="grandTotal">{{total}}</strong>
+           
+          </li>
+        </ul>
+        <!-- Cart -->
+
+        <!-- Promo code -->
+  <form class="card p-2">
+    <div class="input-group">
+      <input type="text" class="form-control" id="couponCode" placeholder="Promo code" aria-label="Recipient's username"
+        aria-describedby="basic-addon2">
+      <div class="input-group-append">
+        <button class="btn btn-secondary btn-md waves-effect m-0" onclick="applyCoupon()" type="button">Redeem</button>
+      </div>
+    </div>
+  </form>
+  <!-- Promo code --> 
+
+
+
+      </div>
+      <!--Grid column-->
+
+    </div>
+    <!--Grid row-->
+
+  </div>
+</main>
+<!--Main layout-->
+
+<script>
+  $("#checkout-form").submit((e) => {
+    e.preventDefault()
+    $.ajax({
+      url: '/check-out',
+      method: 'post',
+      data: $('#checkout-form').serialize(),
+      success: (response) => {
+        //alert(response)
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Order successfully',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        if (response.codSuccess) {
+
+          location.href = '/order-success'
+        } else if(response.paypal) {
+          location.href = response.url
+        }
+        else {
+            razorpayPayment(response)
+        }
+      }
+    })
+  })
+
+  function razorpayPayment(order){
+    var options = {
+    "key": "rzp_test_veDrpIY99crwLr", // Enter the Key ID generated from the Dashboard
+    "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "E-Cart",
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "handler": function (response){
+       
+
+        verifyPayment(response,order)
+    },
+    "prefill": {
+        "name": "Gaurav Kumar",
+        "email": "gaurav.kumar@example.com",
+        "contact": "9999999999"
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options);
+rzp1.open();
+}
+  function verifyPayment(payment,order){
+    $.ajax({
+      url:'/verify-payment',
+      data:{
+        payment,
+        order
+      },
+      method:'post',
+      success:(response)=>{
+        if(response.status){
+          location.href = '/order-success'
+        }else{
+          alert("payment failed");
+        }
+      }
+    })
+  }
+
+  function applyCoupon() {
+    console.log("Inside function");
+    let couponCode = document.getElementById('couponCode').value;
+    let total = parseInt(document.getElementById('grandTotal').innerHTML)
+    $.ajax({
+      url: '/couponApply',
+      data: {
+        Coupon: couponCode,
+        Total: total
+      },
+      method: 'post',
+      success: (response) => {
+        {{!-- alert(response);
+        console.log("success"); --}}
+        if(response.success) {
+          {{!-- alert(response.total); --}}
+           Swal.fire({
+              icon: 'success',
+              title: 'Coupon is applied',
+              confirmButtonText: 'ok',
+            }).then((result) => {
+              console.log(result)
+              if (result.isConfirmed) {
+                document.getElementById('grandTotal').innerHTML = response.total;
+                document.getElementById('total').value = response.total;
+              }
+            })
+         
+        }
+        if(response.couponExpired) {
+             Swal.fire({
+              icon: 'error',
+              title: 'Sorry Coupon Expired',
+              timer: 1500,
+              confirmButtonText: 'ok',
+            })
+        }
+        if(response.invalidCoupon) {
+           Swal.fire({
+              icon: 'error',
+              title: 'Sorry No Coupon Available',
+              timer: 1500,
+              confirmButtonText: 'ok',
+            })
+        }
+      }
+    })
+  }
+
+</script>

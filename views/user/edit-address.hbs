@@ -1,0 +1,212 @@
+<style>
+  body {
+    margin: 200px;
+    justify-content: center;
+
+  }
+
+  .gradient-custom {
+    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+  }
+
+  .card-custom {
+    border-bottom-left-radius: 10% 50%;
+    border-top-left-radius: 10% 50%;
+    background-color: #f8f9fa;
+  }
+
+
+  .input-custom {
+    background-color: white;
+  }
+
+  .white-text {
+    color: hsl(52, 0%, 98%);
+    font-weight: 100;
+    font-size: 14px;
+  }
+
+  .back-button {
+    background-color: hsl(52, 0%, 98%);
+    font-weight: 700;
+    color: black;
+
+
+  }
+</style>
+
+<div class="row mt-3 mx-3" style="margin-top:25px ;">
+
+  <div class="col-md-9 justify-content-center">
+    <div class="card card-custom pb-4">
+      <div class="card-body mt-0 mx-5">
+        <div class="text-center mb-3 pb-2 mt-3">
+          <h4 style="color: #495057 ;">Delivery Address</h4>
+        </div>
+
+        <form class="mb-0" action="/edit-address/{{Address.Address.Address_id}}" method="post">
+
+          <div class="row mb-4">
+            <div class="col">
+              <div class="form-outline">
+                <input type="text" id="name" name="Name" value="{{Address.Address.Name}}"
+                  class="form-control input-custom" onkeyup="validateName()" />
+                <label class="form-label" for="form9Example1">Name</label>
+                <span id="idname" class="text-danger"></span>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-outline">
+                <input type="text" id="city" name="City" value="{{Address.Address.City}}"
+                  class="form-control input-custom" onkeyup="validateCity()" />
+                <label class="form-label" for="form9Example2">City</label>
+                <span id="idcity" class="text-danger"></span>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col">
+              <div class="form-outline">
+                <input type="text" id="address" name="Address" value="{{Address.Address.Address}}"
+                  class="form-control input-custom" onkeyup="validateAddress()" />
+                <label class="form-label" for="form9Example3">Address</label>
+                <span id="idaddress" class="text-danger"></span>
+              </div>
+            </div>
+
+          </div>
+          <div class="row mb-4">
+            <div class="col">
+              <div class="form-outline">
+                <input type="text" id="pin" name="Pincode" value="{{Address.Address.Pincode}}"
+                  class="form-control input-custom" onkeyup="validatePincode()" />
+                <label class="form-label" for="form9Example6">Pincode</label>
+                <span id="idpincode" class="text-danger"></span>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-outline">
+                <input type="text" id="mobile" name="Mobile" maxlength="10" value="{{Address.Address.Mobile}}"
+                  class="form-control input-custom" onkeyup="validateMobile()" />
+                <label class="form-label" for="typeEmail">Mobile Number</label>
+                <span id="idmobile" class="text-danger"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="float-end container justify-content-end d-flex">
+            <!-- Submit button -->
+            <button type="submit" onclick="return validation()" class="btn btn-primary btn-rounded"
+              style="background-color: #0062CC ;">Edit Adress</button>
+          </div>
+          <div class="container justify-content-end d-flex">
+
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var nameError = document.getElementById('idname');
+  var pinError = document.getElementById('idpincode');
+  var mobileError = document.getElementById('idmobile');
+  var cityError = document.getElementById('idcity');
+  var addressError = document.getElementById('idaddress');
+
+  function validateName() {
+    const name = document.getElementById('name').value
+
+    if (name === "") {
+      nameError.innerHTML = "Please enter the name!!!";
+      return false;
+    }
+    if (name.match(/[0-9]/)) {
+      nameError.innerHTML = "Numbers not allowed!!!";
+      return false;
+    }
+
+    nameError.innerHTML = null;
+    return true;
+
+  }
+
+  function validatePincode() {
+    const pincode = document.getElementById('pin').value
+
+    if (pincode === "") {
+      pinError.innerHTML = "Please enter pincode!!!";
+      return false;
+    }
+    if (pincode.match(/[a-z A-Z]/)) {
+      pinError.innerHTML = "Only numbers are allowed!!!";
+      return false;
+    }
+
+    pinError.innerHTML = null;
+    return true;
+
+  }
+
+  function validateMobile() {
+    const mobile = document.getElementById('mobile').value;
+
+    if (mobile === "") {
+      mobileError.innerHTML = "Please enter the mobile number!!!";
+      return false;
+    }
+
+    if (mobile.match(/[a-z A-Z]/)) {
+      mobileError.innerHTML = "Only numbers are allowed!!!";
+      return false;
+    }
+    if (mobile.length < 10) {
+      mobileError.innerHTML = "Number must have 10 digits!!!";
+      return false;
+
+    }
+
+
+
+    mobileError.innerHTML = null;
+    return true;
+  }
+
+  function validateAddress() {
+    const address = document.getElementById('address').value
+
+    if (address === "") {
+      addressError.innerHTML = "Please enter the address!!!";
+      return false;
+    }
+
+    addressError.innerHTML = null;
+    return true;
+
+  }
+
+  function validateCity() {
+    const city = document.getElementById('city').value
+
+    if (city === "") {
+      cityError.innerHTML = "Please enter your city!!!";
+      return false;
+    }
+
+    cityError.innerHTML = null;
+    return true;
+
+  }
+
+  function validation() {
+    if (!validateName() || !validateCity() || !validateMobile() || !validateAddress() || !validatePincode()) {
+      return false;
+    }
+
+    return true;
+
+  }
+
+</script>

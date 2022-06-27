@@ -1,0 +1,315 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;900&display=swap');
+
+  input {
+    caret-color: red;
+  }
+
+    {
+      {
+       !-- body {
+        margin: 0;
+        width: 200vw;
+        height: 200vh;
+        background: #ecf0f3;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+        place-items: center;
+        overflow: hidden;
+        font-family: poppins;
+      }
+
+      --
+    }
+  }
+
+  body {
+    margin-top: 100px;
+  }
+
+
+  .container {
+    margin-top: 30px;
+    position: relative;
+    width: 500px;
+    height: 600px;
+    border-radius: 20px;
+    padding: 40px;
+    box-sizing: border-box;
+    background: #ecf0f3;
+    box-shadow: 14px 14px 20px #cbced1, -14px -14px 20px white;
+  }
+
+  .brand-logo {
+    height: 100px;
+    width: 100px;
+    background: url("https://img.icons8.com/color/100/000000/twitter--v2.png");
+    margin: auto;
+    border-radius: 50%;
+    box-sizing: border-box;
+    box-shadow: 7px 7px 10px #cbced1, -7px -7px 10px white;
+  }
+
+  .brand-title {
+    margin-top: 10px;
+    font-weight: 900;
+    font-size: 1.8rem;
+    color: #1DA1F2;
+    letter-spacing: 1px;
+  }
+
+  .inputs {
+    text-align: left;
+    margin-top: 30px;
+  }
+
+  label,
+  input,
+  button {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+  }
+
+  label {
+    margin-bottom: 4px;
+  }
+
+  label:nth-of-type(3),
+  :nth-of-type(2) {
+    margin-top: 12px;
+  }
+
+  input::placeholder {
+    color: gray;
+  }
+
+  input {
+    background: #ecf0f3;
+    padding: 10px;
+    padding-left: 20px;
+    height: 50px;
+    font-size: 14px;
+    border-radius: 50px;
+    box-shadow: inset 6px 6px 6px #cbced1, inset -6px -6px 6px white;
+  }
+
+  button {
+    color: white;
+    margin-top: 50px;
+    background: #397ff0;
+    height: 40px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 900;
+    box-shadow: 6px 6px 6px #cbced1, -6px -6px 6px white;
+    transition: 0.5s;
+  }
+
+  button:hover {
+    box-shadow: none;
+  }
+
+    {
+      {
+       !-- a {
+        position: absolute;
+        font-size: 8px;
+        bottom: 4px;
+        right: 4px;
+        text-decoration: none;
+        color: black;
+        background: yellow;
+        border-radius: 10px;
+        padding: 2px;
+      }
+
+      --
+    }
+  }
+
+  h1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+</style>
+
+<section>
+
+  <div class="container">
+
+    <div class="brand-title">SIGNUP</div>
+    <form action="/signup" method="post" autocomplete="off">
+
+      <div class="inputs">
+        <label>Enter your Name</label>
+        <input type="text" name="Name" id="name" onkeyup="validateName()" />
+        <span id="idname" class="text-danger h4"></span>
+        <input type="hidden" name="Status" value="Active">
+        <label>Enter your Email</label>
+
+        <input type="email" id="email" name="Email" oninput="checkEmail()" onkeyup="validateEmail()" />
+        <span id="idemail" class="text-danger h4"></span>
+        <span id="checkEmail" class="text-danger"></span>
+        <label>Enter your Mobilenumber</label>
+        <input type="text" id="mobile" name="Mobile" maxlength="10" oninput="checkMobile()"
+          onkeyup="validateMobile()" />
+        <span id="checkMobile" class="text-danger h4"></span>
+        <span id="idmobile" class="text-danger h4"></span>
+        <label>Enter Password</label>
+        <input type="password" id="password" name="Password" maxlength="6" onkeyup="validatePassword()" />
+
+        <span id="idpass" class="text-danger h4"></span>
+        <button type="submit" onclick="return validation()">SIGNUP</button>
+    </form>
+    <div>
+      <p class="mt-5 h5 text-center">Already have an account? <a href="/login">Login Here</a></p>
+    </div>
+  </div>
+
+  </div>
+</section>
+
+<script>
+  var nameError = document.getElementById('idname');
+  var emailError = document.getElementById('idemail');
+  var mobileError = document.getElementById('idmobile');
+  var passwordError = document.getElementById('idpass');
+
+  function validateName() {
+    const name = document.getElementById('name').value
+
+    if (name === "") {
+      nameError.innerHTML = "Please enter the name!!!";
+      return false;
+    }
+    if (name.match(/[0-9]/)) {
+      nameError.innerHTML = "Numbers not allowed!!!";
+      return false;
+    }
+    if (name.match(/[$&+,:;=?@#|'<>.-^*()%!]/)) {
+      nameError.innerHTML = "Special characters not allowed!!!";
+      return false;
+    }
+    nameError.innerHTML = null;
+    return true;
+
+  }
+
+  function validateEmail() {
+    const email = document.getElementById('email').value;
+
+    if (email === "") {
+      emailError.innerHTML = "Please enter the email!!!";
+      return false;
+    }
+    if (!email.match(/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/)) {
+      emailError.innerHTML = "Please enter valid email!!!";
+      return false;
+    }
+    emailError.innerHTML = null;
+    return true;
+  }
+
+  function validateMobile() {
+    const mobile = document.getElementById('mobile').value;
+
+    if (mobile === "") {
+      mobileError.innerHTML = "Please enter the mobile number!!!";
+      return false;
+    }
+
+    if (mobile.match(/[a-z A-Z]/)) {
+      mobileError.innerHTML = "Only numbers are allowed!!!";
+      return false;
+    }
+    if (mobile.length < 10) {
+      mobileError.innerHTML = "Number must have 10 digits!!!";
+      return false;
+
+    }
+    {
+      {
+        !-- if (!mobile.match(/[0-9]{10}/)) {
+          mobileError.innerHTML = "Number must have 10 digits!!!";
+          return false;
+        } --}
+    }
+
+    mobileError.innerHTML = null;
+    return true;
+  }
+
+  function validatePassword() {
+    const password = document.getElementById('password').value;
+
+    if (password === "") {
+      passwordError.innerHTML = "Please enter the password!!!";
+      return false;
+    }
+
+    if (password.length < 6) {
+      passwordError.innerHTML = "Password must be 6 characters long!!!";
+      return false;
+    }
+
+
+    passwordError.innerHTML = null;
+    return true;
+  }
+
+  function validation() {
+    if (!validateName() || !validateEmail() || !validateMobile() || !validatePassword()) {
+      return false;
+    }
+
+    return true;
+
+  }
+
+
+  function checkEmail(userEmail) {
+    var userEmail = $('#email').val();
+    $.ajax({
+      url: '/check-email',
+      data: { email: userEmail },
+      method: 'post',
+      success: (response) => {
+        if (response.status) {
+
+          document.getElementById('checkEmail').innerHTML = "This email already exist!!!";
+
+        } else {
+          document.getElementById('checkEmail').innerHTML = null;
+        }
+
+      }
+    })
+  }
+
+  function checkMobile(userMobile) {
+    var userMobile = $('#mobile').val();
+    $.ajax({
+      url: '/check-mobile',
+      data: { mobile: userMobile },
+      method: 'post',
+      success: (response) => {
+        if (response.status) {
+
+          document.getElementById('checkMobile').innerHTML = "This Number already exist!!!";
+
+        } else {
+          document.getElementById('checkMobile').innerHTML = null;
+        }
+
+      }
+    })
+  }
+
+</script>

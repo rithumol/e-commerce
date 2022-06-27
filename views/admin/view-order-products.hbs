@@ -1,0 +1,182 @@
+{{!--
+<div class="page-wrapper">
+    <!-- ============================================================== -->
+    <!-- Container fluid  -->
+    <!-- ============================================================== -->
+    <div class="container-fluid">
+        <!-- ============================================================== -->
+        <!-- End Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Start Page Content -->
+        <!-- ============================================================== -->
+        <div class="row">
+
+
+
+
+            <!-- column -->
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Orderd Products</h4>
+
+                        <div class="table-responsive h4">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+
+
+
+                                        <th>Price</th>
+                                        <th>Description</th>
+                                        <th>Image</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each products}}
+                                    <tr>
+                                        <td>{{this.product.Name}}</td>
+
+
+
+                                        <td>{{this.product.DiscountPrice}}</td>
+                                        <td>{{this.product.Description}}</td>
+                                        <td><img style="width: 50px;height:50px"
+                                                src="/product-images/{{this.product.Images.[0]}}" alt=""></td>
+
+                                    </tr>
+
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> --}}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
+
+</head>
+
+<body>
+    <div class="page-wrapper">
+
+        <div class="container-fluid">
+
+            <table id="example" class="display h4 mt-5">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Description</th>
+                        <th>Image</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each products}}
+                    <tr>
+                        <td>{{inc @index}}</td>
+                        <td>{{this.product.Name}}</td>
+                        <td>{{this.product.DiscountPrice}}</td>
+
+                        <td>{{this.product.Description}}</td>
+
+                        <td>
+                            <img style="width: 50px;height:50px" src="/product-images/{{this.product.Images.[0]}}"
+                                alt="">
+                        </td>
+
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <script>
+        function blockUser(event) {
+            var link = event.currentTarget.href;
+            //var name = event.currentTarget.name;
+            event.preventDefault();
+
+
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to Block this User!",
+                icon: 'warning',
+                iconColor: '#bf0f0f',
+                showCancelButton: true,
+                confirmButtonColor: '#11ba25',
+                cancelButtonColor: '#bf0f0f',
+                confirmButtonText: `Yes`
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location = link;
+                } else {
+                    return false;
+                }
+            })
+        }
+
+        function unblockUser(event) {
+            var link = event.currentTarget.href;
+            //var name = event.currentTarget.name;
+            event.preventDefault();
+
+
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to Unblock this User!",
+                icon: 'warning',
+                iconColor: '#bf0f0f',
+                showCancelButton: true,
+                confirmButtonColor: '#11ba25',
+                cancelButtonColor: '#bf0f0f',
+                confirmButtonText: `Yes`
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location = link;
+                } else {
+                    return false;
+                }
+            })
+        }
+    </script>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+
+
+</body>
+
+</html>

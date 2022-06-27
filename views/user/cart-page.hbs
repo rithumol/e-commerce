@@ -1,0 +1,163 @@
+<style>
+  body {
+    background: #00b09b;
+    margin-top: 100px;
+    background: -webkit-linear-gradient(to right, #00b09b, #96c93d);
+    background: linear-gradient(to right, #00b09b, #96c93d);
+    min-height: 100vh;
+  }
+
+  .ui-w-40 {
+    width: 40px !important;
+    height: auto;
+  }
+
+  .card {
+    box-shadow: 0 1px 15px 1px rgba(52, 40, 104, .08);
+  }
+
+  .ui-product-color {
+    display: inline-block;
+    overflow: hidden;
+    margin: .144em;
+    width: .875rem;
+    height: .875rem;
+    border-radius: 10rem;
+    -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15) inset;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15) inset;
+    vertical-align: middle;
+  }
+</style>
+
+
+<div class="container px-3 my-5 clearfix">
+  <!-- Shopping cart table -->
+  <div class="card">
+    <div class="card-header">
+      <h2>My Cart</h2>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered m-0 h4">
+          <thead>
+            <tr>
+              <!-- Set columns width -->
+              <th class="text-center py-3 px-4" style="min-width: 100px;">Product Image</th>
+              <th class="text-center py-3 px-4" style="min-width: 200px;">Product Name</th>
+              <th class="text-right py-3 px-4" style="width: 100px;">Price</th>
+              <th class="text-center py-3 px-4" style="width: 120px;">Quantity</th>
+              <th class="text-center align-middle py-3 px-0" style="width: 100px;"><a href="#"
+                  class="shop-tooltip float-none text-light" title="" data-original-title="Clear cart"><i
+                    class="ino ion-md-trash"></i></a></th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each products}}
+            <tr>
+
+              <td class="text-center font-weight-semibold align-middle p-4"> <img
+                  src="/product-images/{{this.product.Images.[0]}}" style="width: 70px;height:70px" alt=""></td>
+              <td class="text-center font-weight-semibold align-middle p-4">{{this.product.Name}}</td>
+              {{#if (eq this.product.Offer "true")}}
+              <td class="text-right font-weight-semibold align-middle p-4">{{this.product.DiscountPrice}}</td>
+              {{else}}
+              <td class="text-right font-weight-semibold align-middle p-4">{{this.product.ActualPrice}}</td>
+              {{/if}}
+              <td class="align-middle p-4">
+                <button class="cart-item-count mr-3"
+                  onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',-1)">-</button>
+                <span id="{{this.product._id}}">{{this.quantity}}</span>
+                <button class="cart-item-count ml-3"
+                  onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',1)">+</button>
+              </td>
+              <td class="text-center align-middle px-0"><a href="/delete-cartItem/{{this._id}}/{{this.product._id}}"
+                  onclick="deleteCartItem(event)" class="btn btn-danger btn-sm" title="" data-original-title="Remove"
+                  style="border-radius: 50%;padding: 10px 24px;">Remove</a></td>
+            </tr>
+            {{/each}}
+
+
+          </tbody>
+        </table>
+      </div>
+      <!-- / Shopping cart table -->
+
+      <div class="d-flex flex-wrap justify-content-between align-items-center pb-4">
+        <div class="mt-4">
+
+        </div>
+        <div class="d-flex">
+          <div class="text-right mt-4 mr-5 ml-auto">
+
+          </div>
+          <div class="text-right mt-4">
+            <label class=" font-weight-normal m-0 h3">Total price</label>
+            <div class="text-large h4"><strong><span id="total">{{total}}</span></strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="float-right">
+        <button type="button" class="btn btn-lg btn-default md-btn-flat mt-2 mr-3"
+          onclick="location.href='/view-products'">Back to shopping</button>
+        <button type="button" class="btn btn-lg btn-primary mt-2" onclick="location.href='/check-out'">Checkout</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  function changeQuantity(cartId, proId, userId, count) {
+    let quantity = parseInt(document.getElementById(proId).innerHTML)
+    count = parseInt(count)
+    $.ajax({
+      url: '/change-product-quantity',
+      data: {
+        user: userId,
+        cart: cartId,
+        product: proId,
+        count: count,
+        quantity: quantity
+      },
+      method: 'post',
+      success: (response) => {
+        if (response.removeProduct) {
+          alert("Product Removed from cart")
+          location.reload()
+        } else {
+          document.getElementById(proId).innerHTML = quantity + count
+          document.getElementById('total').innerHTML = response.total
+        }
+
+      }
+    })
+  }
+
+
+  function deleteCartItem(event) {
+    var link = event.currentTarget.href;
+
+    event.preventDefault();
+
+
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You want to Delete This Item!",
+      icon: 'warning',
+      iconColor: '#bf0f0f',
+      showCancelButton: true,
+      confirmButtonColor: '#11ba25',
+      cancelButtonColor: '#bf0f0f',
+      confirmButtonText: `Yes`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location = link;
+      } else {
+        return false;
+      }
+    })
+  }
+
+</script>

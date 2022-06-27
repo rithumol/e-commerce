@@ -1,0 +1,108 @@
+<style>
+  body {
+    margin-top: 100px;
+  }
+
+  td {
+    padding: 0 25px;
+  }
+</style>
+
+
+<section>
+  <div class="container">
+    <div class="table-responsive h4">
+      <table class="table" style="box-shadow: 3px 3px;">
+        <thead class="table-dark">
+          <tr>
+
+            <th scope="col">Date</th>
+            <th scope="col">Address</th>
+
+            <th scope="col">Mobile</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Payment Method</th>
+            <th scope="col">Status</th>
+            <th scope="col">Option</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each orders}}
+          <tr>
+            <td>{{this.date}}</td>
+            <td>{{this.address.address}}</td>
+
+            <td>{{this.address.mobile}}</td>
+            <td>{{this.totalAmount}}</td>
+            <td>{{this.paymentMethod}}</td>
+            <td>{{this.status}}</td>
+            <td><a href="/view-order-products/{{this._id}}" class="btn" style="font-size:10px ;">View Products</a>
+              {{#if (eq this.status "delivered")}}
+              <a href="/return-order/{{this._id}}" onclick="returnOrderProduct(event)" style="font-size:10px ;"
+                class="btn btn-outline-danger">Return</a>
+            </td>
+            {{else}}
+            {{#unless (eq this.status "returned")}}
+            <a href="/delete-order/{{this._id}}" onclick="deleteOrderProduct(event)" style="font-size:10px ;"
+              class="btn btn-outline-danger">Cancel</a></td>
+            {{/unless}}
+            {{/if}}
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+</section>
+<script>
+  function deleteOrderProduct(event) {
+    var link = event.currentTarget.href;
+
+    event.preventDefault();
+
+
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You want to Cancel This Order!",
+      icon: 'warning',
+      iconColor: '#bf0f0f',
+      showCancelButton: true,
+      confirmButtonColor: '#11ba25',
+      cancelButtonColor: '#bf0f0f',
+      confirmButtonText: `Yes`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location = link;
+      } else {
+        return false;
+      }
+    })
+  }
+
+
+  function returnOrderProduct(event) {
+    var link = event.currentTarget.href;
+
+    event.preventDefault();
+
+
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You want to Return This Product!",
+      icon: 'warning',
+      iconColor: '#bf0f0f',
+      showCancelButton: true,
+      confirmButtonColor: '#11ba25',
+      cancelButtonColor: '#bf0f0f',
+      confirmButtonText: `Yes`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location = link;
+      } else {
+        return false;
+      }
+    })
+  }
+
+</script>

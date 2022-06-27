@@ -1,0 +1,46 @@
+<link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+
+<!-- font awesome cdn link  -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<!-- custom css file link  -->
+<link rel="stylesheet" href="/stylesheets/style.css">
+
+<header class="header">
+
+    <a href="#" class="logo"> <i class="fas fa-shopping-cart"></i> shop </a>
+
+    <nav class="navbar">
+        <a href="/">home</a>
+        <a href="/view-products">products</a>
+        <a href="/orders">My Orders</a>
+
+    </nav>
+    <div class="icons">
+        <div id="menu-btn" class="fas fa-bars"></div>
+        <a href="/user-profile" class="fas fa-user"></a>
+        <a href="/cart" class="fas fa-shopping-cart"><span class="badge badge-light"
+                id="cart-count">{{cartCount}}</span></a>
+        <a href="/wishlist" class="fas fa-heart"></a>
+    </div>
+
+    <div class="btn-group">
+        <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            {{#if user}}
+            {{user.Name}}
+            {{else}}
+            Account
+            {{/if}}
+        </button>
+        <ul class="dropdown-menu">
+            {{#if user}}
+            <li><a class="dropdown-item" href="/logout">Logout</a></li>
+
+            {{else}}
+            <li><a class="dropdown-item" href="/login">User Login</a></li>
+
+            {{/if}}
+
+        </ul>
+    </div>
+</header>

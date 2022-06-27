@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
+
+
+
+</head>
+
+<body>
+    <div class="page-wrapper">
+
+        <div class="container-fluid">
+
+
+            <table id="example" class="display h4 mt-5">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Stock</th>
+                        <th>Price</th>
+                        <th>Discount Price</th>
+                        <th>Description</th>
+                        <th>Image</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each products}}
+                    <tr>
+                        <td>{{inc @index}}</td>
+                        <td>{{this.Name}}</td>
+                        <td>{{this.Category}}</td>
+                        <td>{{this.Stock}}</td>
+                        <td>{{this.ActualPrice}}</td>
+                        <td>{{this.DiscountPrice}}</td>
+                        <td>{{this.Description}}</td>
+                        <td><img style="width: 50px;height:50px" src="/product-images/{{this.Images.[0]}}" alt=""></td>
+                        <td><a href="/admin/edit-product/{{this._id}}" style="font-size:10px ;"
+                                class="btn btn-primary">Edit</a>
+                            <a class="btn btn-danger" style="font-size:10px ;" onclick="deleteProduct(event)"
+                                name="{{this.Name}}" href="/admin/delete-product/{{this._id}}">Delete</a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <script>
+        function deleteProduct(event) {
+            var link = event.currentTarget.href;
+            var name = event.currentTarget.name;
+            event.preventDefault();
+
+
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to Delete!" + " " + name,
+                icon: 'warning',
+                iconColor: '#bf0f0f',
+                showCancelButton: true,
+                confirmButtonColor: '#11ba25',
+                cancelButtonColor: '#bf0f0f',
+                confirmButtonText: `Yes`
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location = link;
+                } else {
+                    return false;
+                }
+            })
+        }
+    </script>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+
+
+</body>
+
+</html>

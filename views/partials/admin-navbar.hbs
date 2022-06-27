@@ -1,0 +1,123 @@
+<style>
+  .mainmenu,
+  .submenu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* make ALL links (main and submenu) have padding and background color */
+  .mainmenu a {
+    display: block;
+    background-color: #CCC;
+    text-decoration: none;
+    padding: 10px;
+    color: #000;
+  }
+
+  /* add hover behaviour */
+  .mainmenu a:hover {
+    background-color: #C5C5C5;
+  }
+
+
+  /* when hovering over a .mainmenu item,
+  display the submenu inside it.
+  we're changing the submenu's max-height from 0 to 200px;
+*/
+
+  .mainmenu li:hover .submenu {
+    display: block;
+    max-height: 200px;
+  }
+
+  /*
+  we now overwrite the background-color for .submenu links only.
+  CSS reads down the page, so code at the bottom will overwrite the code at the top.
+*/
+
+  .submenu a {
+    background-color: #ddd;
+  }
+
+  /* hover behaviour for links inside .submenu */
+  .submenu a:hover {
+    background-color: #993;
+  }
+
+  /* this is the initial state of all submenus.
+  we set it to max-height: 0, and hide the overflowed content.
+*/
+  .submenu {
+    overflow: hidden;
+    max-height: 0;
+    -webkit-transition: all 0.5s ease-out;
+  }
+</style>
+
+
+
+<aside class="left-sidebar side-nav " style="margin-top: 70px;">
+
+  <div class="scroll-sidebar">
+
+    <nav class="sidebar-nav">
+      <ul id="sidebarnav" class="mainmenu">
+        <li> <a class="waves-effect waves-dark" href="/admin/" aria-expanded="false"><i class="mdi mdi-gauge"></i><span
+              class="hide-menu">Dashboard</span></a></li>
+
+        <li> <a class="waves-effect waves-dark" href="/admin/view-products" aria-expanded="false"><i
+              class="mdi mdi-account-check"></i><span class="hide-menu">Product Management</span></a>
+          <ul class="submenu">
+            <li><a href="/admin/view-products">View Products</a></li>
+            <li><a href="/admin/add-products">Add Products</a></li>
+
+          </ul>
+        </li>
+
+        <li> <a class="waves-effect waves-dark" href="/admin/all-users" aria-expanded="false"><i
+              class="mdi mdi-table"></i><span class="hide-menu">User Management</span></a></li>
+
+        <li> <a class="waves-effect waves-dark" href="/admin/all-category" aria-expanded="false"><i
+              class="mdi mdi-emoticon"></i><span class="hide-menu">Category Manage</span></a>
+          <ul class="submenu">
+            <li><a href="/admin/all-category">View Categories</a></li>
+            <li><a href="/admin/add-category">Add Category</a></li>
+
+          </ul>
+        </li>
+        <li> <a class="waves-effect waves-dark" href="/admin/add-banner" aria-expanded="false"><i
+              class="mdi mdi-earth"></i><span class="hide-menu">Banner Management</span></a></li>
+
+        <li> <a class="waves-effect waves-dark" href="/admin/addCoupon" aria-expanded="false"><i
+              class="mdi mdi-emoticon"></i><span class="hide-menu">Coupon Management</span></a>
+          <ul class="submenu">
+            <li><a href="/admin/addCoupon">Add Coupon</a></li>
+            <li><a href="/admin/viewCoupon">View Coupons</a></li>
+
+          </ul>
+        </li>
+
+        <li> <a class="waves-effect waves-dark" href="/admin/add-productoffer" aria-expanded="false"><i
+              class="mdi mdi-emoticon"></i><span class="hide-menu">Add Offers</span></a>
+          <ul class="submenu">
+            <li><a href="/admin/add-productoffer">Product Offer</a></li>
+            <li><a href="/admin/add-categoryoffer">Category Offer</a></li>
+
+          </ul>
+        </li>
+
+        <li> <a class="waves-effect waves-dark" href="/admin/view-orders" aria-expanded="false"><i
+              class="mdi mdi-earth"></i><span class="hide-menu">View Orders</span></a></li>
+
+        <li> <a class="waves-effect waves-dark" href="/admin/order-report" aria-expanded="false"><i
+              class="mdi mdi-earth"></i><span class="hide-menu">Sales Report</span></a>
+        </li>
+
+      </ul>
+
+    </nav>
+
+  </div>
+
+</aside>

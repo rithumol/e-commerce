@@ -1,0 +1,275 @@
+<style>
+    .registration-form {
+        padding: 50px 0;
+    }
+
+    .registration-form form {
+        background-color: #fff;
+        max-width: 700px;
+
+        margin: auto;
+        padding: 50px 70px;
+        border-top-left-radius: 30px;
+        border-top-right-radius: 30px;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.075);
+    }
+
+    .registration-form .form-icon {
+        text-align: center;
+        background-color: #5891ff;
+        border-radius: 50%;
+        font-size: 40px;
+        color: white;
+        width: 100px;
+        height: 100px;
+        margin: auto;
+        margin-bottom: 50px;
+        line-height: 100px;
+    }
+
+    .registration-form .item {
+        border-radius: 20px;
+        margin-bottom: 25px;
+        padding: 10px 20px;
+    }
+
+    .registration-form .create-account {
+        border-radius: 30px;
+        padding: 10px 20px;
+        font-size: 18px;
+        font-weight: bold;
+        background-color: #5791ff;
+        border: none;
+        color: white;
+        margin-top: 20px;
+    }
+
+    .registration-form .social-media {
+        max-width: 600px;
+        background-color: #fff;
+        margin: auto;
+        padding: 35px 0;
+        text-align: center;
+        border-bottom-left-radius: 30px;
+        border-bottom-right-radius: 30px;
+        color: #9fadca;
+        border-top: 1px solid #dee9ff;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.075);
+    }
+
+    .registration-form .social-icons {
+        margin-top: 30px;
+        margin-bottom: 16px;
+    }
+
+    .registration-form .social-icons a {
+        font-size: 23px;
+        margin: 0 3px;
+        color: #5691ff;
+        border: 1px solid;
+        border-radius: 50%;
+        width: 45px;
+        display: inline-block;
+        height: 45px;
+        text-align: center;
+        background-color: #fff;
+        line-height: 45px;
+    }
+
+    .registration-form .social-icons a:hover {
+        text-decoration: none;
+        opacity: 0.6;
+    }
+
+    @media (max-width: 576px) {
+        .registration-form form {
+            padding: 50px 20px;
+        }
+
+        .registration-form .form-icon {
+            width: 70px;
+            height: 70px;
+            font-size: 30px;
+            line-height: 70px;
+        }
+    }
+</style>
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <div class="container">
+
+            <a href="/admin/edit-images/{{product._id}}" class="btn btn-success  col-2  mr-auto"
+                style="margin-left: auto;">Edit Images</a>
+            <div class="registration-form">
+
+                <form style="width: 500px;" action="/admin/edit-product/{{product._id}}" method="post"
+                    enctype="text/plain">
+
+                    <div class="form-group">
+                        <label for="">Name</label>
+                        <input type="text" class="form-control my-1 item" id="name" name="Name" value="{{product.Name}}"
+                            placeholder="" onkeyup="validateName()">
+                        <span id="idname" class="text-danger h5"></span><br>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Category</label>
+                        <select name="Category" class="form-control my-1 item">
+                            <option value="{{product.Category}}" selected>{{product.Category}}</option>
+                            {{#each category}}
+                            <option value="{{this._id}}">{{this.Name}}</option>
+
+                            {{/each}}
+                        </select>
+                        <span id="idcategory" class="text-danger h5"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Stock</label>
+                        <input type="text" name="Stock" class="form-control item my-1" id="stock" placeholder=""
+                            value="{{product.Stock}}" onkeyup="validateStock()">
+                        <span id="idstock" class="text-danger h5"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Original Price</label>
+                        <input type="text" name="ActualPrice" class="form-control item my-1" id="aprice" placeholder=""
+                            value="{{product.ActualPrice}}" onkeyup="validateActualPrice()">
+                        <span id="idaprice" class="text-danger h5"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Discount Price</label>
+                        <input type="text" class="form-control item my-1" name="DiscountPrice" id="dprice"
+                            placeholder="" value="{{product.DiscountPrice}}" onkeyup="validateDiscountPrice()">
+                        <span id="iddprice" class="text-danger h5"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Description</label>
+                        <input type="text" class="form-control item my-1" id="des" name="Description" placeholder=""
+                            value="{{product.Description}}" onkeyup="validateDescription()">
+                        <span id="iddes" class="text-danger h5"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-block create-account"
+                            onclick="return validation()">SUBMIT</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+</body>
+
+</html>
+
+
+<script>
+    var nameError = document.getElementById('idname');
+    var stockError = document.getElementById('idstock');
+    var apriceError = document.getElementById('idaprice');
+    var dpriceError = document.getElementById('iddprice');
+    var desError = document.getElementById('iddes');
+
+
+    function validateName() {
+        const name = document.getElementById('name').value
+
+        if (name === "") {
+            nameError.innerHTML = "Please enter the name!!!";
+            return false;
+        }
+        if (name.match(/[0-9]/)) {
+            nameError.innerHTML = "Numbers not allowed!!!";
+            return false;
+        }
+        {
+            {
+                !-- if (name.match(/[$&+,:;=?@#|'<>.-^*()%!]/)) {
+                    nameError.innerHTML = "Special characters not allowed!!!";
+                    return false;
+                } --}
+        }
+        nameError.innerHTML = null;
+        return true;
+    }
+
+    function validateStock() {
+        const stock = document.getElementById('stock').value
+
+        if (stock === "") {
+            stockError.innerHTML = "Please enter stock!!!";
+            return false;
+        }
+        if (stock.match(/[a-z A-Z]/)) {
+            stockError.innerHTML = "Only numbers are allowed";
+            return false;
+        }
+
+        stockError.innerHTML = null;
+        return true;
+    }
+
+    function validateActualPrice() {
+        const aprice = document.getElementById('aprice').value
+
+        if (aprice === "") {
+            apriceError.innerHTML = "Please enter Price!!!";
+            return false;
+        }
+        if (aprice.match(/[a-z A-Z]/)) {
+            apriceError.innerHTML = "Only numbers are allowed";
+            return false;
+        }
+
+        apriceError.innerHTML = null;
+        return true;
+    }
+
+    function validateDiscountPrice() {
+        const dprice = document.getElementById('dprice').value
+
+        if (dprice === "") {
+            dpriceError.innerHTML = "Please enter Price!!!";
+            return false;
+        }
+        if (dprice.match(/[a-z A-Z]/)) {
+            dpriceError.innerHTML = "Only numbers are allowed";
+            return false;
+        }
+
+        dpriceError.innerHTML = null;
+        return true;
+    }
+
+    function validateDescription() {
+        const des = document.getElementById('des').value
+
+        if (des === "") {
+            desError.innerHTML = "Please enter Description!!!";
+            return false;
+        }
+
+        desError.innerHTML = null;
+        return true;
+    }
+
+    function validation() {
+        if (!validateName() || !validateStock() || !validateActualPrice() || !validateDiscountPrice() || !validateDescription()) {
+            return false;
+        }
+
+        return true;
+
+    }
+</script>

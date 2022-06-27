@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<style>
+</style>
+
+<body>
+    <div class="page-wrapper " style="width: 100%;">
+
+        <section>
+            <div class="row h5">
+
+                <div class="col-xl-3 col-sm-6 mb-4 mt-5">
+                    <div class="card">
+                        <div class="card-header p-5 pt-2">
+                            <div
+                                class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                                <i class="material-icons opacity-10">Uptodate</i>
+                            </div>
+                            <div class="text-end pt-1">
+                                <p class="text-sm mb-0 text-capitalize">Total Users</p>
+                                <h4 class="mb-0">{{response.userCount}}</h4>
+                            </div>
+                        </div>
+                        <hr class="dark horizontal my-0">
+                        <div class="card-footer p-3">
+                            <p class="mb-0"><span
+                                    class="text-success text-sm font-weight-bolder">{{response.activeUsers}}
+                                    &nbsp</span>Active Users</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4 mt-5">
+                    <div class="card">
+                        <div class="card-header p-5 pt-2">
+                            <div
+                                class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
+                                <i class="material-icons opacity-10">Uptodate</i>
+                            </div>
+                            <div class="text-end pt-1">
+                                <p class="text-sm mb-0 text-capitalize">Total orders</p>
+                                <h4 class="mb-0">{{response.orderCount}}</h4>
+                            </div>
+                        </div>
+                        <hr class="dark horizontal my-0">
+                        <div class="card-footer p-3">
+                            <p class="mb-0"><span class="text-danger text-sm font-weight-bolder">-2%</span> than
+                                yesterday</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 mt-5">
+                    <div class="card">
+                        <div class="card-header p-5 pt-2">
+                            <div
+                                class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
+                                <i class="material-icons">Uptodate</i>
+                            </div>
+                            <div class="text-end pt-1">
+                                <p class="text-sm mb-0 text-capitalize">Total Income</p>
+                                <h4 class="mb-0">{{response.totalIncome}}</h4>
+                            </div>
+                        </div>
+                        <hr class="dark horizontal my-0">
+                        <div class="card-footer p-3">
+                            <p class="mb-0"><span class="text-success text-sm font-weight-bolder">+5% </span>than
+                                yesterday</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <span id="totalproducts" hidden>{{response.totalProducts}}</span>
+        <span id="menproducts" hidden>{{response.menProducts}}</span>
+        <span id="womenproducts" hidden>{{response.womenProducts}}</span>
+        <span id="kidsproducts" hidden>{{response.kidsProducts}}</span>
+
+
+        <div class="row" style="margin-left:20rem;">
+            <div class="col-4 m-5">
+                <canvas id="mypieChart" class="border p-0 m-5 border-dark"></canvas>
+            </div>
+        </div>
+
+
+
+        <div class="row" style="margin-left:20rem">
+            <div class="col-md-6">
+                <canvas id="myChart1" class="border p-0 m-5 border-dark"></canvas>
+            </div>
+        </div>
+
+        <div class="row" style="margin-left:20rem">
+            <div class="col-md-6">
+                <canvas id="myChart2" class="border p-0 m-5 border-dark "></canvas>
+            </div>
+        </div>
+
+        <div class="row" style="margin-left:20rem">
+            <div class="col-md-6">
+                <canvas id="myChart3" class="border p-0 m-5 border-dark "></canvas>
+            </div>
+        </div>
+
+
+
+</body>
+
+</html>
+
+<script>
+    let products = document.getElementById('totalproducts').innerHTML
+    let men = document.getElementById('menproducts').innerHTML
+    let women = document.getElementById('womenproducts').innerHTML
+    let kids = document.getElementById('kidsproducts').innerHTML
+    const pi = document.getElementById('mypieChart').getContext('2d');
+    const myPieChart = new Chart(pi, {
+        type: 'pie',
+        data: {
+            labels: ['Total Products', 'Men', 'Women', 'Kids'],
+            datasets: [{
+                label: 'Payment methods',
+                data: [products, men, women, kids],
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)',
+
+                    'rgb(82, 215, 38)',
+                ],
+            }]
+
+        },
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "/admin/getChartData",
+            method: "get",
+            success: (chartData) => {
+                console.log("/////////////////", chartData);
+
+                const ctx = document.getElementById('myChart1').getContext('2d');
+                const myChart1 = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: chartData.year,
+                        datasets: [{
+                            label: "Yearly Sales Chart",
+                            data: chartData.yearlySale,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                title: {
+                                    color: 'black',
+                                    display: 'true',
+                                    text: 'Amount'
+                                },
+                                beginAtZero: true
+                            },
+
+                            x: {
+                                title: {
+                                    color: 'black',
+                                    display: 'true',
+                                    text: 'Year'
+                                },
+                                beginAtZero: true
+                            },
+
+                        }
+
+
+                    }
+                });
+
+
+                const ctx1 = document.getElementById('myChart2').getContext('2d');
+                const myChart2 = new Chart(ctx1, {
+                    type: 'bar',
+                    data: {
+                        labels: chartData.month,
+                        datasets: [{
+                            label: "Monthly Sales Chart",
+                            data: chartData.monthlySale,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                title: {
+                                    color: 'black',
+                                    display: 'true',
+                                    text: 'Amount'
+                                },
+                                beginAtZero: true
+                            },
+
+                            x: {
+                                title: {
+                                    color: 'black',
+                                    display: 'true',
+                                    text: 'Month'
+                                },
+                                beginAtZero: true
+                            },
+
+                        }
+
+
+                    }
+                });
+
+                const ctx2 = document.getElementById('myChart3').getContext('2d');
+                const myChart3 = new Chart(ctx2, {
+                    type: 'bar',
+                    data: {
+                        labels: chartData.date,
+                        datasets: [{
+                            label: "Weekly Sales Chart",
+                            data: chartData.dailySale,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                title: {
+                                    color: 'black',
+                                    display: 'true',
+                                    text: 'Amount'
+                                },
+                                beginAtZero: true
+                            },
+
+                            x: {
+                                title: {
+                                    color: 'black',
+                                    display: 'true',
+                                    text: 'Date'
+                                },
+                                beginAtZero: true
+                            },
+
+                        }
+
+
+                    }
+                });
+
+
+            }
+        })
+    })
+</script>

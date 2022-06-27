@@ -1,0 +1,207 @@
+<style>
+    body {
+        margin: 100px;
+        margin-top: 150px;
+        background: rgb(99, 39, 120)
+    }
+
+    .form-control:focus {
+        box-shadow: none;
+        border-color: #BA68C8
+    }
+
+    .profile-button {
+        background: rgb(99, 39, 120);
+        box-shadow: none;
+        border: none
+    }
+
+    .profile-button:hover {
+        background: #682773
+    }
+
+    .profile-button:focus {
+        background: #682773;
+        box-shadow: none
+    }
+
+    .profile-button:active {
+        background: #682773;
+        box-shadow: none
+    }
+
+    .back:hover {
+        color: #682773;
+        cursor: pointer
+    }
+
+    .labels {
+        font-size: 11px
+    }
+
+    .add-experience:hover {
+        background: #BA68C8;
+        color: #fff;
+        cursor: pointer;
+        border: solid 1px #BA68C8
+    }
+</style>
+
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5"
+                    width="150px" src="/product-images/{{userDetails.Image}}"><span
+                    class="font-weight-bold">{{userDetails.Name}}</span><span
+                    class="text-black-50">{{userDetails.Email}}</span><span> </span></div>
+            <div class="mb-5">
+                <form action="/edit-photo" method="post" enctype="multipart/form-data">
+                    <input type="file" name="Image" id="image" onchange="validateImage()" class="form-control" multiple>
+                    <span id="idimage" class="text-danger"></span>
+                    <button class="btn btn-primary profile-button" onclick="return validation()" type="submit">Save
+                        Photo</button>
+                </form>
+            </div>
+
+        </div>
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Profile Settings</h4>
+                </div>
+                <form action="/user-profile" method="post">
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label class="labels">Name</label>
+                            <input type="text" name="Name" id="name" class="form-control" placeholder="first name"
+                                value="{{userDetails.Name}}" onkeyup="validateName()">
+                            <span id="idname" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <label class="labels">Email</label>
+                            <input type="text" name="Email" id="email" class="form-control"
+                                placeholder="enter phone number" value="{{userDetails.Email}}"
+                                onkeyup="validateEmail()">
+                            <span id="idemail" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label class="labels">Mobile Number</label>
+                            <input type="text" id="mobile" name="Mobile" class="form-control"
+                                placeholder="enter email id" value="{{userDetails.Mobile}}" onkeyup="validateMobile()">
+                            <span id="idmobile" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                    <div class="row mt-3">
+
+                    </div>
+                    <div class="mt-5 text-center"><button class="btn btn-primary profile-button"
+                            onclick="return validateForm()" type="submit">Save Profile</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-3 py-5">
+                <button class="btn btn-primary profile-button" onclick="location.href='/view-address'"
+                    type="button">View Address</button>
+                <button class="btn btn-primary profile-button" onclick="location.href='/change-password'"
+                    type="button">Change Password</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<script>
+    var imageError = document.getElementById('idimage');
+    var nameError = document.getElementById('idname');
+
+
+
+    function validateName() {
+        const name = document.getElementById('name').value
+
+        if (name === "") {
+            nameError.innerHTML = "Please enter the name!!!";
+            return false;
+        }
+        if (name.match(/[0-9]/)) {
+            nameError.innerHTML = "Numbers not allowed!!!";
+            return false;
+        }
+
+        nameError.innerHTML = null;
+        return true;
+
+    }
+    function validateEmail() {
+        const email = document.getElementById('email').value;
+
+        if (email === "") {
+            emailError.innerHTML = "Please enter the email!!!";
+            return false;
+        }
+        if (!email.match(/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/)) {
+            emailError.innerHTML = "Please enter valid email!!!";
+            return false;
+        }
+        emailError.innerHTML = null;
+        return true;
+    }
+
+    function validateMobile() {
+        const mobile = document.getElementById('mobile').value;
+
+        if (mobile === "") {
+            mobileError.innerHTML = "Please enter the mobile number!!!";
+            return false;
+        }
+
+        if (mobile.match(/[a-z A-Z]/)) {
+            mobileError.innerHTML = "Only numbers are allowed!!!";
+            return false;
+        }
+        if (mobile.length < 10) {
+            mobileError.innerHTML = "Number must have 10 digits!!!";
+            return false;
+
+        }
+
+
+
+        mobileError.innerHTML = null;
+        return true;
+    }
+    function validateImage() {
+        const image = document.getElementById('image').value
+
+        if (image == "") {
+            imageError.innerHTML = "Please enter image!!!";
+            return false;
+        }
+        imageError.innerHTML = null;
+        return true;
+    }
+    function validation() {
+        if (!validateImage() || !validateEmail() || !validateMobile()) {
+            return false;
+        }
+
+        return true;
+
+    }
+
+    function validateForm() {
+        if (!validateName()) {
+            return false;
+        }
+        return true;
+    }
+</script>
