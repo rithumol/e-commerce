@@ -116,6 +116,8 @@ router.get('/otp-login', (req, res) => {
 })
 
 router.post('/otp-login', async (req, res) => {
+  console.log("post otp login");
+  console.log(req.body.Mobile);
   const userMobile = req.body.Mobile;
   client
     .verify
@@ -357,8 +359,8 @@ router.post('/check-out', async (req, res) => {
           "payment_method": "paypal"
         },
         "redirect_urls": {
-          "return_url": "http://localhost:3000/success",
-          "cancel_url": "http://localhost:3000/cancel"
+          "return_url": "https://ecart.life/success",
+          "cancel_url": "https://ecart.life/cancel"
         },
         "transactions": [{
           "item_list": {

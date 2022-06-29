@@ -36,7 +36,7 @@
             <td>{{this.totalAmount}}</td>
             <td>{{this.paymentMethod}}</td>
             <td>{{this.status}}</td>
-            <td><a href="/view-order-products/{{this._id}}" class="btn" style="font-size:10px ;">View Products</a>
+            <td><a href="/view-order-products/{{this._id}}" class="btn btn-outline-danger" style="font-size:10px ;">View Products</a>
               {{#if (eq this.status "delivered")}}
               <a href="/return-order/{{this._id}}" onclick="returnOrderProduct(event)" style="font-size:10px ;"
                 class="btn btn-outline-danger">Return</a>
