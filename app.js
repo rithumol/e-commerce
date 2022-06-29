@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 
-var createError = require('http-errors');
+// var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -67,7 +67,7 @@ app.use('/admin',adminRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
-  // res.render('404',{err404:true});
+  
 });
 
 
