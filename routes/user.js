@@ -490,13 +490,13 @@ router.get('/womenProducts', async (req, res) => {
 // get men products
 router.get('/menProducts', async (req, res) => {
   let products = await productHelpers.getMenProducts()
-  res.render('user/menpage', { products, user: req.session.user });
+  res.render('user/menPage', { products, user: req.session.user });
 })
 
 // get kids products
 router.get('/kidsProducts', async (req, res) => {
   let products = await productHelpers.getKidsProducts()
-  res.render('user/kidspage', { products, user: req.session.user });
+  res.render('user/kidsPage', { products, user: req.session.user });
 })
 
 
