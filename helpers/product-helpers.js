@@ -11,32 +11,32 @@ var objectId = require('mongodb').ObjectID
 module.exports = {
     getAllProducts: () => {
         return new Promise(async (resolve, reject) => {
-            await db.get().collection(collections.PRODUCT_COLLECTION).find().toArray().then((products) => {
+            await db.get().collection(collections.PRODUCT_COLLECTION).find({Exist:"true"}).toArray().then((products) => {
                 resolve(products)
             })
         })
     },
     getAllProductsList: () => {
         return new Promise(async (resolve, reject) => {
-            let products = await db.get().collection(collections.PRODUCT_COLLECTION).find().toArray()
+            let products = await db.get().collection(collections.PRODUCT_COLLECTION).find({Exist:"true"}).toArray()
             resolve(products)
         })
     },
     getWomenProducts: () => {
         return new Promise(async (resolve, reject) => {
-            let womenProducts = await db.get().collection(collections.PRODUCT_COLLECTION).find({ Category: "Women" }).toArray()
+            let womenProducts = await db.get().collection(collections.PRODUCT_COLLECTION).find({ Category: "Women", Exist: "true"}).toArray()
             resolve(womenProducts)
         })
     },
     getMenProducts: () => {
         return new Promise(async (resolve, reject) => {
-            let menProducts = await db.get().collection(collections.PRODUCT_COLLECTION).find({ Category: "Men" }).toArray()
+            let menProducts = await db.get().collection(collections.PRODUCT_COLLECTION).find({ Category: "Men", Exist: "true" }).toArray()
             resolve(menProducts)
         })
     },
     getKidsProducts: () => {
         return new Promise(async (resolve, reject) => {
-            let kidsProducts = await db.get().collection(collections.PRODUCT_COLLECTION).find({ Category: "Kids" }).toArray()
+            let kidsProducts = await db.get().collection(collections.PRODUCT_COLLECTION).find({ Category: "Kids", Exist: "true" }).toArray()
             resolve(kidsProducts)
         })
     },
@@ -112,7 +112,11 @@ module.exports = {
     },
     deleteProduct: (proId) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(collections.PRODUCT_COLLECTION).remove({ _id: ObjectId(proId) }).then((response) => {
+            db.get().collection(collections.PRODUCT_COLLECTION).updateOne({ _id: ObjectId(proId) },{
+                $set: {
+                    Exist: "false"
+                }
+            }).then((response) => {
                 resolve(response)
             })
         })
@@ -404,7 +408,7 @@ module.exports = {
                     }
                 },
                 {
-                    $sort: { _id: -1 }
+                    $sort: { date: -1 }
                 }
             ]).toArray()
             resolve(orders)

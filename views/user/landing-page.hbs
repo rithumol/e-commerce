@@ -50,21 +50,21 @@
     <h1 class="heading"> exclusive <span>products</span> </h1>
 
     <div class="filter-buttons">
-        <div class="buttons active" data-filter="all">all</div>
+        <div class="buttons active" onclick="location.href='/view-products'" data-filter="all">all</div>
 
-        <div class="buttons" data-filter="featured">Women</div>
-        <div class="buttons" data-filter="special">Men</div>
-        <div class="buttons" data-filter="seller">Kids</div>
+        <div class="buttons" onclick="location.href='/womenProducts'" data-filter="featured">Women</div>
+        <div class="buttons" onclick="location.href='/menProducts'" data-filter="special">Men</div>
+        <div class="buttons" onclick="location.href='/kidsProducts'" data-filter="seller">Kids</div>
     </div>
 
     <div class="box-container">
         {{#each products}}
         <div class="box" data-item="featured">
             <div class="icons">
-                <a href="#" class="fas fa-shopping-cart"></a>
-                <a href="#" class="fas fa-heart"></a>
+                <a href="#" onclick="addToCart('{{this._id}}')" class="fas fa-shopping-cart"></a>
+                <a href="#" onclick="addToWishlist('{{this._id}}')" class="fas fa-heart"></a>
                 <a href="#" class="fas fa-search"></a>
-                <a href="#" class="fas fa-eye"></a>
+                <a href="#" href="/single-productview/{{this._id}}" class="fas fa-eye"></a>
             </div>
             <div class="image">
                 <img src="/product-images/{{this.Images.[0]}}" alt="">
@@ -152,28 +152,28 @@
 
         <div class="box">
             <h3>category</h3>
-            <a href="#"> <i class="fas fa-arrow-right"></i> men </a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> women </a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> kids </a>
+            <a href="/menProducts"> <i class="fas fa-arrow-right"></i> men </a>
+            <a href="/womenProducts"> <i class="fas fa-arrow-right"></i> women </a>
+            <a href="/kidsProducts"> <i class="fas fa-arrow-right"></i> kids </a>
 
         </div>
 
         <div class="box">
             <h3>quick links</h3>
-            <a href="#"> <i class="fas fa-arrow-right"></i> home </a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> products </a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> women </a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> men </a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> kids </a>
+            <a href="/"> <i class="fas fa-arrow-right"></i> home </a>
+            <a href="/view-products"> <i class="fas fa-arrow-right"></i> products </a>
+            <a href="/womenProducts"> <i class="fas fa-arrow-right"></i> women </a>
+            <a href="/menProducts"> <i class="fas fa-arrow-right"></i> men </a>
+            <a href="/kidsProducts"> <i class="fas fa-arrow-right"></i> kids </a>
 
         </div>
 
         <div class="box">
             <h3>extra links</h3>
-            <a href="#"> <i class="fas fa-arrow-right"></i> my order </a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> my account </a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> my wishlist </a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> my cart </a>
+            <a href="/orders"> <i class="fas fa-arrow-right"></i> my order </a>
+            <a href="/user-profile"> <i class="fas fa-arrow-right"></i> my account </a>
+            <a href="/wishlist"> <i class="fas fa-arrow-right"></i> my wishlist </a>
+            <a href="/cart"> <i class="fas fa-arrow-right"></i> my cart </a>
 
         </div>
 
@@ -187,7 +187,7 @@
         <a href="#" class="fab fa-instagram"></a>
     </div>
 
-    <div class="credit"> &copy; copyright @ 2021 by <span>mr. web designer</span> </div>
+    <div class="credit"> &copy; copyright @ 2022 by <span>E-cart</span> </div>
 
 </section>
 
@@ -196,3 +196,53 @@
 </body>
 
 </html>
+
+<script>
+     function addToCart(proId) {
+        $.ajax({
+            url: '/add-to-cart/' + proId,
+            method: 'get',
+            success: (response) => {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Item added to cart',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                let count = $('#cart-count').html()
+                count = parseInt(count) + 1
+                $("#cart-count").html(count)
+                location.reload()
+            }
+        })
+    }
+
+    function addToWishlist(proId) {
+        $.ajax({
+            url: '/add-to-wishlist/' + proId,
+            method: 'get',
+            success: (response) => {
+                console.log("success");
+                if (response.success) {
+                    Swal.fire({
+
+                        icon: 'success',
+                        title: 'Item added to wishlist',
+                        confirmButtonText: 'ok',
+
+                    })
+                }
+                if (response.exist) {
+                    Swal.fire({
+
+                        icon: 'success',
+                        title: 'Item already added in wishlist',
+                        confirmButtonText: 'ok',
+
+                    })
+                }
+            }
+        })
+    }
+</script>

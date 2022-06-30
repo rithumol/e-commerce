@@ -45,7 +45,7 @@ router.get('/', verifyAdminLogin, async function (req, res, next) {
 
 
 // product listing
-router.get('/view-products', (req, res) => {
+router.get('/view-products', verifyAdminLogin, (req, res) => {
   productHelpers.getAllProducts().then((products) => {
     res.render('admin/view-products', { admin: true, products });
   })
@@ -80,7 +80,7 @@ router.get('/admin-logout', (req, res) => {
 })
 
 // add new products
-router.get('/add-products', function (req, res) {
+router.get('/add-products',verifyAdminLogin, function (req, res) {
   productHelpers.getAllCategory().then((category) => {
     res.render('admin/add-product', { category, admin: true })
   })
@@ -144,7 +144,7 @@ router.get('/delete-category/:id', (req, res) => {
 })
 
 // Get all users
-router.get('/all-users', (req, res) => {
+router.get('/all-users', verifyAdminLogin, (req, res) => {
   productHelpers.getAllUsers().then((users) => {
     res.render('admin/view-users', { admin: true, users });
   })
@@ -152,7 +152,7 @@ router.get('/all-users', (req, res) => {
 })
 
 // Get all orders
-router.get('/view-orders', (req, res) => {
+router.get('/view-orders', verifyAdminLogin, (req, res) => {
   productHelpers.getAllOrders().then((orders) => {
     res.render('admin/view-orders', { admin: true, orders });
   })
@@ -196,14 +196,14 @@ router.get('/unblock-user/:id', (req, res) => {
 })
 
 // get all categories
-router.get('/all-category', (req, res) => {
+router.get('/all-category', verifyAdminLogin, (req, res) => {
   productHelpers.getAllCategory().then((category) => {
     res.render('admin/view-category', { category, admin: true })
   })
 })
 
 // Add new category
-router.get('/add-category', (req, res) => {
+router.get('/add-category', verifyAdminLogin, (req, res) => {
   res.render('admin/add-category', { admin: true });
 })
 
@@ -228,7 +228,7 @@ router.post('/edit-category/:id', upload.single('Image'), (req, res, next) => {
 })
 
 // banner management
-router.get('/add-banner', (req, res) => {
+router.get('/add-banner', verifyAdminLogin, (req, res) => {
   productHelpers.getBannerImages().then((images) => {
     res.render('admin/banner', { admin: true, images });
   })
@@ -281,14 +281,14 @@ router.get('/getChartData', async (req, res) => {
 })
 
 // sales report
-router.get('/order-report', (req, res) => {
+router.get('/order-report', verifyAdminLogin, (req, res) => {
   productHelpers.getAllDeliveredOrders().then((orders) => {
     res.render('admin/report', { admin: true, orders });
   })
 })
 
 // coupon management
-router.get('/addCoupon', (req, res) => {
+router.get('/addCoupon', verifyAdminLogin, (req, res) => {
   res.render('admin/coupon', { admin: true });
 })
 
@@ -312,7 +312,7 @@ router.get('/delete-coupon/:id', (req, res) => {
 })
 
 // add product offer
-router.get('/add-productoffer', async (req, res) => {
+router.get('/add-productoffer', verifyAdminLogin,async (req, res) => {
   let offerProducts = await productHelpers.getAllOfferPrducts()
   productHelpers.getAllProducts().then((products) => {
     res.render('admin/product-offer', { admin: true, products, offerProducts });

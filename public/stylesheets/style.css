@@ -15,7 +15,7 @@
 
 .header .icons div,
 .header .icons a, .header .search-form label, .products .box-container .box .icons a, .featured .featured-slider .slide .icons a, .contact .icons-container .icons i {
-  color: rgb(0, 0, 0);
+  color: #fff;
   cursor: pointer;
   -webkit-text-stroke: 0.1rem #130f40;
 }
@@ -108,7 +108,7 @@ section {
 
 .header .navbar a {
   font-size: 1.7rem;
-  color: rgb(0, 0, 0);
+  color: #666;
   margin: 0 1rem;
 }
 
